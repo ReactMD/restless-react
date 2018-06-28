@@ -1,0 +1,47 @@
+body {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #eee;
+}
+
+h1 {
+  text-align: center;
+}
+
+table {
+  border: 1px solid black;
+  margin: 20px;
+  border-radius: 5px;
+}
+
+table th {
+  background-color: #123;
+  color: white;
+}
+
+table td {
+  padding: 10px;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #ddd;
+}
+
+.books-container {
+  flex: 1 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100vw;
+  flex-wrap: wrap;
+}
