@@ -6,7 +6,7 @@ import Books from "./containers/Books";
 import Authors from "./containers/Authors";
 
 const client = new ApolloClient({
-  uri: "https://vm0lxnn5m3.lp.gql.zone/graphql"
+  uri: "http://localhost:4000/api/gql"
 });
 
 class App extends Component {
