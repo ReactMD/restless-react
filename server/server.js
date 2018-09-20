@@ -6,31 +6,31 @@ var { SubscriptionServer } = require("subscriptions-transport-ws");
 var { makeExecutableSchema } = require("graphql-tools");
 var { createServer } = require('http');
 var cors = require("cors");
-var { filter, find, findIndex } = require("lodash");
+var { filter, find } = require("lodash");
 // Construct a schema, using GraphQL schema language
 var typeDefs = `
   type Author {
-    id: Int!
+    id: Int
     name: String
     books: [Book]
   }
 
   type Book {
-    id: Int!
+    id: Int
     title: String
     author: Author
-    quantity: Int!
+    quantity: Int
   }
 
   type Query {
     books: [Book]
     authors: [Author]
-    author(id: Int!): Author
+    author(id: Int): Author
   }
 
   type Mutation {
-    addBookQuantity(id: Int!): Book
-    removeBookQuantity(id: Int!): Book
+    addBookQuantity(id: Int): Book
+    removeBookQuantity(id: Int): Book
   }
 
   type Subscription {

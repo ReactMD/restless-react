@@ -3,7 +3,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
 const REMOVE_QUANTITY = gql`
-  mutation RemoveBookQuantity($id: Int!) {
+  mutation RemoveBookQuantity($id: Int) {
     removeBookQuantity(id: $id) {
       id
       quantity
