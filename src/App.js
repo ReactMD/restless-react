@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { split } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { split } from "apollo-link";
+import { HttpLink } from "apollo-link-http";
+import { WebSocketLink } from "apollo-link-ws";
+import { getMainDefinition } from "apollo-utilities";
 
 import "./App.css";
 import Books from "./components/Books";
@@ -13,7 +13,7 @@ import Books from "./components/Books";
 import LiveBooks from "./components/LiveBooks";
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/api/gql'
+  uri: "http://localhost:4000/api/gql"
 });
 
 const wsLink = new WebSocketLink({
@@ -29,15 +29,15 @@ const link = split(
   // split based on operation type
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
-    return kind === 'OperationDefinition' && operation === 'subscription';
+    return kind === "OperationDefinition" && operation === "subscription";
   },
   wsLink,
-  httpLink,
+  httpLink
 );
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache()
 });
 
 class App extends Component {
@@ -47,7 +47,7 @@ class App extends Component {
         <h1>GraphQL Books</h1>
         <div className="books-container">
           <Books />
-          <LiveBooks />
+          {/* <LiveBooks /> */}
         </div>
       </ApolloProvider>
     );
