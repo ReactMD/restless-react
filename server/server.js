@@ -1,8 +1,10 @@
 var express = require("express");
 var graphqlHTTP = require("express-graphql");
+var { PubSub } = require("graphql-subscriptions");
 var { execute, subscribe } = require("graphql");
 var { SubscriptionServer } = require("subscriptions-transport-ws");
 var { makeExecutableSchema } = require("graphql-tools");
+var { createServer } = require('http');
 var cors = require("cors");
 var { filter, find, findIndex } = require("lodash");
 // Construct a schema, using GraphQL schema language
@@ -30,6 +32,10 @@ var typeDefs = `
     addBookQuantity(id: Int!): Book
     removeBookQuantity(id: Int!): Book
   }
+
+  type Subscription {
+    bookUpdated(id: Int): Book
+  }
 `;
 
 var books = [
@@ -53,6 +59,8 @@ var authors = [
   { id: 5, name: "Elizabeth Kaye" }
 ];
 
+var pubsub = new PubSub();
+
 var resolvers = {
   Query: {
     books: () => books,
@@ -63,6 +71,7 @@ var resolvers = {
       const idx = books.findIndex(book => book.id === id);
       if (idx !== -1) {
         books[idx].quantity++;
+        pubsub.publish('bookUpdated', { bookUpdated: books[idx] });
         return books[idx];
       }
       return undefined;
@@ -71,9 +80,15 @@ var resolvers = {
       const idx = books.findIndex(book => book.id === id);
       if (idx !== -1) {
         books[idx].quantity--;
+        pubsub.publish('bookUpdated', { bookUpdated: books[idx] });
         return books[idx];
       }
       return undefined;
+    }
+  },
+  Subscription: {
+    bookUpdated: {
+      subscribe: () => pubsub.asyncIterator('bookUpdated')
     }
   },
   Author: {
@@ -99,18 +114,18 @@ app.use(
   })
 );
 
-SubscriptionServer.create(
-  {
-    schema,
-    execute,
-    subscribe
-  },
-  {
-    server: app,
-    path: "/api/ws"
-  }
-);
+var ws = createServer(app);
 
-app.listen(4000);
+ws.listen(4000, () => {
+  new SubscriptionServer({
+    execute,
+    subscribe,
+    schema
+  }, {
+    server: ws,
+    path: "/api/ws",
+  });
+});
+
 console.log("Running a GraphQL API server at localhost:4000/api/gql");
 console.log("Running a GraphQL WS server at localhost:4000/api/ws");

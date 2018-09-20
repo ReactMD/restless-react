@@ -2,22 +2,8 @@ import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import BookTable from "../components/BookTable";
-
+import { GET_BOOKS } from "../queries";
 const Books = () => {
-  const query = gql`
-    {
-      books {
-        id
-        title
-        quantity
-        author {
-          id
-          name
-        }
-      }
-    }
-  `;
-
   // result is passed to child of query as props
   const renderQueryResult = ({ loading, error, data }) => {
     if (loading) return <p>Loading the Books...</p>;
@@ -26,7 +12,7 @@ const Books = () => {
     return <BookTable books={data.books} />;
   };
 
-  return <Query query={query}>{renderQueryResult}</Query>;
+  return <Query query={GET_BOOKS}>{renderQueryResult}</Query>;
 };
 
 export default Books;
