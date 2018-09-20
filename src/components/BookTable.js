@@ -29,7 +29,7 @@ const BookTable = ({ books }) => {
   });
 
   return (
-    <table>
+    <table cellspacing="0">
       <thead>
         <tr>
           <th>Title</th>

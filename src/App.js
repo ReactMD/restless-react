@@ -44,7 +44,7 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <h1>GraphQL Books</h1>
+        <h1>Greg's Books</h1>
         <div className="books-container">
           <Books />
           {/* <LiveBooks /> */}
