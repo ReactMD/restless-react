@@ -27,7 +27,8 @@ var typeDefs = `
   }
 
   type Mutation {
-    setBookQuantity(id: Int!, quantity: Int!): Int!
+    addBookQuantity(id: Int!): Book
+    removeBookQuantity(id: Int!): Book
   }
 `;
 
@@ -58,13 +59,21 @@ var resolvers = {
     authors: () => authors
   },
   Mutation: {
-    setBookQuantity: (_, { id, quantity }) => {
+    addBookQuantity: (_, { id }) => {
       const idx = books.findIndex(book => book.id === id);
       if (idx !== -1) {
-        books[idx].quantity = quantity;
-        return quantity;
+        books[idx].quantity++;
+        return books[idx];
       }
-      return -1;
+      return undefined;
+    },
+    removeBookQuantity: (_, { id }) => {
+      const idx = books.findIndex(book => book.id === id);
+      if (idx !== -1) {
+        books[idx].quantity--;
+        return books[idx];
+      }
+      return undefined;
     }
   },
   Author: {

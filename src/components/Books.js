@@ -1,17 +1,18 @@
 import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import AuthorTable from "../components/AuthorTable";
+import BookTable from "../components/BookTable";
 
-const Authors = () => {
+const Books = () => {
   const query = gql`
     {
-      authors {
+      books {
         id
-        name
-        books {
+        title
+        quantity
+        author {
           id
-          title
+          name
         }
       }
     }
@@ -19,13 +20,13 @@ const Authors = () => {
 
   // result is passed to child of query as props
   const renderQueryResult = ({ loading, error, data }) => {
-    if (loading) return <p>Loading the Authors...</p>;
-    if (error) return <p>Error: {JSON.stringify(error)}</p>;
+    if (loading) return <p>Loading the Books...</p>;
+    if (error) return <p>{JSON.stringify(error)}</p>;
 
-    return <AuthorTable authors={data.authors} />;
+    return <BookTable books={data.books} />;
   };
 
   return <Query query={query}>{renderQueryResult}</Query>;
 };
 
-export default Authors;
+export default Books;
